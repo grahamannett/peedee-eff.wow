@@ -1,0 +1,17 @@
+[project]
+name = "sidecar"
+version = "0.1.0"
+description = "Add your description here"
+requires-python = ">=3.14"
+dependencies = [
+    "ebooklib>=0.20",
+    "latex2mathml>=3.79.0",
+    "marker-pdf>=1.10.2",
+]
+
+[dependency-groups]
+dev = [
+    "fpdf2>=2.8.7",
+    "pyinstaller>=6.19.0",
+    "pytest>=9.0.2",
+]

@@ -31,6 +31,17 @@ env/
 # Frontend
 node_modules/
 dist/
+bun.lock
+
+# PyInstaller
+sidecar/build/
+sidecar/dist/
+
+# Tauri bundled binaries (large, build artifacts)
+src-tauri/binaries/
+
+# Test output
+test-output/
 
 # IDE
 .vscode/
@@ -45,3 +56,6 @@ dist/
 !.env.example
 
 input/*
+
+# ignore until we determine packages/deps
+uv.lock
