@@ -26,58 +26,53 @@ export function Preview({ markdownPath, onBack }: PreviewProps) {
   }, [markdownPath]);
 
   return (
-    <div className="min-h-screen flex flex-col">
-      <header className="flex items-center gap-3 px-6 py-4 border-b border-border">
-        <button
-          onClick={onBack}
-          className="flex items-center gap-1.5 text-sm text-text-secondary hover:text-text transition-colors"
-        >
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <polyline points="15 18 9 12 15 6" />
-          </svg>
-          Back
+    <div className="min-h-screen flex flex-col bg-bg">
+      {/* Toolbar */}
+      <header className="bevel-raised bg-bg-secondary flex items-center gap-2 px-3 py-1">
+        <button onClick={onBack} className="btn text-xs">
+          &lt; Back
         </button>
-        <div className="h-4 w-px bg-border" />
-        <span className="text-sm text-text-muted truncate">{markdownPath}</span>
+        <span className="text-xs text-text-muted truncate">{markdownPath}</span>
       </header>
 
+      {/* Content */}
       <main className="flex-1 overflow-y-auto">
         {loading && (
-          <div className="flex items-center justify-center h-64">
-            <p className="text-text-muted">Loading preview...</p>
+          <div className="flex items-center justify-center h-32">
+            <p className="text-xs text-text-muted">Loading...</p>
           </div>
         )}
 
         {error && (
-          <div className="p-6">
-            <p className="text-error">{error}</p>
+          <div className="p-3">
+            <p className="text-xs text-error">{error}</p>
           </div>
         )}
 
         {!loading && !error && (
-          <article className="max-w-3xl mx-auto px-8 py-6 prose-container">
+          <article className="bevel-inset bg-bg-inset m-3 p-6 max-w-2xl mx-auto">
             <Markdown
               components={{
                 h1: ({ children }) => (
-                  <h1 className="text-2xl font-bold mt-8 mb-4 text-text">{children}</h1>
+                  <h1 className="text-lg font-bold mt-6 mb-3">{children}</h1>
                 ),
                 h2: ({ children }) => (
-                  <h2 className="text-xl font-semibold mt-6 mb-3 text-text">{children}</h2>
+                  <h2 className="text-base font-bold mt-5 mb-2">{children}</h2>
                 ),
                 h3: ({ children }) => (
-                  <h3 className="text-lg font-medium mt-5 mb-2 text-text">{children}</h3>
+                  <h3 className="text-sm font-bold mt-4 mb-2">{children}</h3>
                 ),
                 p: ({ children }) => (
-                  <p className="text-text leading-relaxed mb-4">{children}</p>
+                  <p className="text-xs leading-relaxed mb-3">{children}</p>
                 ),
                 ul: ({ children }) => (
-                  <ul className="list-disc list-inside mb-4 text-text space-y-1">{children}</ul>
+                  <ul className="list-disc list-inside mb-3 text-xs space-y-1">{children}</ul>
                 ),
                 ol: ({ children }) => (
-                  <ol className="list-decimal list-inside mb-4 text-text space-y-1">{children}</ol>
+                  <ol className="list-decimal list-inside mb-3 text-xs space-y-1">{children}</ol>
                 ),
                 blockquote: ({ children }) => (
-                  <blockquote className="border-l-3 border-border pl-4 my-4 text-text-secondary italic">
+                  <blockquote className="border-l-2 border-border pl-3 my-3 text-text-secondary italic text-xs">
                     {children}
                   </blockquote>
                 ),
@@ -85,46 +80,46 @@ export function Preview({ markdownPath, onBack }: PreviewProps) {
                   const isBlock = className?.includes("language-");
                   if (isBlock) {
                     return (
-                      <pre className="bg-bg-tertiary rounded-lg p-4 my-4 overflow-x-auto">
-                        <code className="text-sm font-mono text-text">{children}</code>
+                      <pre className="bevel-inset bg-bg-tertiary p-3 my-3 overflow-x-auto">
+                        <code className="text-xs font-mono">{children}</code>
                       </pre>
                     );
                   }
                   return (
-                    <code className="bg-bg-tertiary px-1.5 py-0.5 rounded text-sm font-mono">
+                    <code className="bg-bg-tertiary px-1 text-xs font-mono">
                       {children}
                     </code>
                   );
                 },
                 img: ({ src, alt }) => (
-                  <figure className="my-6">
+                  <figure className="my-4">
                     <img
                       src={src}
                       alt={alt}
-                      className="max-w-full rounded-lg border border-border"
+                      className="max-w-full bevel-inset"
                     />
                     {alt && (
-                      <figcaption className="text-center text-xs text-text-muted mt-2">
+                      <figcaption className="text-center text-xs text-text-muted mt-1">
                         {alt}
                       </figcaption>
                     )}
                   </figure>
                 ),
-                hr: () => <hr className="border-border my-8" />,
+                hr: () => <div className="etch my-4" />,
                 table: ({ children }) => (
-                  <div className="overflow-x-auto my-4">
-                    <table className="w-full border-collapse border border-border text-sm">
+                  <div className="overflow-x-auto my-3">
+                    <table className="w-full border-collapse text-xs bevel-inset">
                       {children}
                     </table>
                   </div>
                 ),
                 th: ({ children }) => (
-                  <th className="border border-border bg-bg-tertiary px-3 py-2 text-left font-medium">
+                  <th className="border border-border bg-bg-secondary p-1 text-left font-bold text-xs">
                     {children}
                   </th>
                 ),
                 td: ({ children }) => (
-                  <td className="border border-border px-3 py-2">{children}</td>
+                  <td className="border border-border p-1 text-xs">{children}</td>
                 ),
               }}
             >

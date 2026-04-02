@@ -158,16 +158,19 @@ function App() {
   };
 
   const startConversion = async () => {
-    if (!outputDir || files.length === 0) return;
+    if (files.length === 0) return;
 
     setConverting(true);
 
     const queuedFiles = files.filter((f) => f.status === "queued");
     for (const file of queuedFiles) {
+      // Use selected output dir, or fall back to the input file's directory
+      const fileDir = file.path.substring(0, file.path.lastIndexOf("/"));
+      const targetDir = outputDir || fileDir;
       try {
         const result = await invoke<{ id: string }>("start_conversion", {
           pdfPath: file.path,
-          outputDir,
+          outputDir: targetDir,
           options: {
             force_ocr: options.force_ocr,
             page_range: options.page_range || null,
@@ -215,43 +218,36 @@ function App() {
   }
 
   const hasQueuedFiles = files.some((f) => f.status === "queued");
-  const canConvert = hasQueuedFiles && outputDir && sidecarReady && !converting;
+  const canConvert = hasQueuedFiles && sidecarReady && !converting;
+
+  const queuedCount = files.filter((f) => f.status === "queued").length;
 
   return (
-    <div className="min-h-screen flex flex-col">
-      {/* Header */}
-      <header className="flex items-center justify-between px-6 py-4 border-b border-border">
-        <div className="flex items-center gap-3">
-          <h1 className="text-lg font-semibold tracking-tight">peedee-eff</h1>
+    <div className="min-h-screen flex flex-col bg-bg">
+      {/* Menu bar */}
+      <header className="bevel-raised bg-bg-secondary flex items-center justify-between px-3 py-1">
+        <div className="flex items-center gap-2">
+          <span className="font-bold text-xs">peedee-eff</span>
+          <span className="etch mx-1 h-3 w-0 border-l border-border border-r border-border-light" />
           <span className="text-xs text-text-muted">PDF to EPUB & Markdown</span>
         </div>
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2">
           {sidecarReady ? (
-            <span className="flex items-center gap-1.5 text-xs text-success">
-              <span className="w-1.5 h-1.5 rounded-full bg-success" />
-              Ready
-            </span>
+            <span className="text-xs text-success font-bold">● Ready</span>
           ) : (
-            <span className="flex items-center gap-1.5 text-xs text-text-muted">
-              <span className="w-1.5 h-1.5 rounded-full bg-text-muted animate-pulse" />
-              Starting...
-            </span>
+            <span className="text-xs text-text-muted">○ Starting...</span>
           )}
           <button
             onClick={() => setShowSettings(true)}
-            className="p-1.5 rounded-lg text-text-muted hover:text-text hover:bg-bg-secondary transition-colors"
-            title="Settings"
+            className="btn text-xs px-2"
           >
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <circle cx="12" cy="12" r="3" />
-              <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
-            </svg>
+            Settings
           </button>
         </div>
       </header>
 
       {/* Main content */}
-      <main className="flex-1 p-6 max-w-2xl mx-auto w-full space-y-4">
+      <main className="flex-1 p-3 max-w-xl mx-auto w-full space-y-3">
         <DropZone onFilesAdded={addFiles} disabled={converting} />
 
         <FileList
@@ -261,7 +257,7 @@ function App() {
         />
 
         {files.length > 0 && (
-          <>
+          <div className="space-y-3">
             <OptionsPanel
               options={options}
               onChange={setOptions}
@@ -269,34 +265,44 @@ function App() {
             />
 
             {/* Output folder */}
-            <div className="flex items-center gap-3">
-              <button
-                onClick={pickOutputDir}
-                disabled={converting}
-                className="shrink-0 px-4 py-2 text-sm rounded-lg border border-border text-text-secondary hover:text-text hover:border-border-hover hover:bg-bg-secondary transition-colors disabled:opacity-50"
-              >
-                {outputDir ? "Change folder" : "Choose output folder"}
-              </button>
-              {outputDir && (
-                <span className="text-sm text-text-muted truncate">
-                  {outputDir}
+            <fieldset className="group-box">
+              <legend>Output Folder</legend>
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={pickOutputDir}
+                  disabled={converting}
+                  className="btn text-xs"
+                >
+                  Browse...
+                </button>
+                <span className="text-xs text-text-secondary truncate">
+                  {outputDir || "(same as input file)"}
                 </span>
-              )}
-            </div>
+              </div>
+            </fieldset>
 
             {/* Convert button */}
             <button
               onClick={startConversion}
               disabled={!canConvert}
-              className="w-full py-3 text-sm font-medium rounded-lg bg-accent text-white hover:bg-accent-hover transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+              className="btn btn-primary w-full text-xs font-bold py-1"
             >
               {converting
                 ? "Converting..."
-                : `Convert ${files.filter((f) => f.status === "queued").length} file${files.filter((f) => f.status === "queued").length !== 1 ? "s" : ""}`}
+                : `Convert ${queuedCount} file${queuedCount !== 1 ? "s" : ""}`}
             </button>
-          </>
+          </div>
         )}
       </main>
+
+      {/* Status bar */}
+      <footer className="bevel-raised bg-bg-secondary px-3 py-1 flex items-center">
+        <span className="text-xs text-text-muted">
+          {files.length === 0
+            ? "Drop a PDF to begin"
+            : `${files.length} file${files.length !== 1 ? "s" : ""} loaded`}
+        </span>
+      </footer>
     </div>
   );
 }

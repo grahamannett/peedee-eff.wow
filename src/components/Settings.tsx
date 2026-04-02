@@ -72,33 +72,23 @@ export function Settings({ onBack }: SettingsProps) {
   const opts = settings.defaultOptions;
 
   return (
-    <div className="min-h-screen flex flex-col">
-      <header className="flex items-center gap-3 px-6 py-4 border-b border-border">
-        <button
-          onClick={onBack}
-          className="flex items-center gap-1.5 text-sm text-text-secondary hover:text-text transition-colors"
-        >
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <polyline points="15 18 9 12 15 6" />
-          </svg>
-          Back
+    <div className="min-h-screen flex flex-col bg-bg">
+      {/* Toolbar */}
+      <header className="bevel-raised bg-bg-secondary flex items-center gap-2 px-3 py-1">
+        <button onClick={onBack} className="btn text-xs">
+          &lt; Back
         </button>
-        <div className="h-4 w-px bg-border" />
-        <span className="text-sm font-medium">Settings</span>
-        {saved && (
-          <span className="ml-auto text-xs text-success">Saved</span>
-        )}
+        <span className="text-xs font-bold">Settings</span>
+        {saved && <span className="text-xs text-success ml-auto font-bold">Saved</span>}
       </header>
 
-      <main className="flex-1 overflow-y-auto p-6 max-w-xl mx-auto w-full space-y-8">
+      <main className="flex-1 overflow-y-auto p-3 max-w-md mx-auto w-full space-y-3">
         {/* Default Output Format */}
-        <section className="space-y-3">
-          <h2 className="text-sm font-medium text-text-secondary uppercase tracking-wider">
-            Default Output Format
-          </h2>
+        <fieldset className="group-box">
+          <legend>Default Output Format</legend>
           <div className="flex gap-4">
             {["epub", "markdown"].map((fmt) => (
-              <label key={fmt} className="flex items-center gap-2 cursor-pointer">
+              <label key={fmt} className="flex items-center gap-1 cursor-pointer text-xs">
                 <input
                   type="checkbox"
                   checked={opts.output_formats.includes(fmt)}
@@ -110,91 +100,72 @@ export function Settings({ onBack }: SettingsProps) {
                       update({ defaultOptions: { ...opts, output_formats: formats } });
                     }
                   }}
-                  className="accent-accent"
                 />
-                <span className="text-sm capitalize">{fmt}</span>
+                {fmt.toUpperCase()}
               </label>
             ))}
           </div>
-        </section>
+        </fieldset>
 
         {/* Default OCR Options */}
-        <section className="space-y-3">
-          <h2 className="text-sm font-medium text-text-secondary uppercase tracking-wider">
-            Default OCR Options
-          </h2>
-          <label className="flex items-center gap-2 cursor-pointer">
-            <input
-              type="checkbox"
-              checked={opts.force_ocr}
-              onChange={(e) => update({ defaultOptions: { ...opts, force_ocr: e.target.checked } })}
-              className="accent-accent"
-            />
-            <span className="text-sm">Force OCR</span>
-          </label>
-          <label className="flex items-center gap-2 cursor-pointer">
-            <input
-              type="checkbox"
-              checked={opts.extract_images}
-              onChange={(e) => update({ defaultOptions: { ...opts, extract_images: e.target.checked } })}
-              className="accent-accent"
-            />
-            <span className="text-sm">Extract images</span>
-          </label>
-          <div>
-            <label className="text-xs text-text-muted">Language</label>
-            <select
-              value={opts.language}
-              onChange={(e) => update({ defaultOptions: { ...opts, language: e.target.value } })}
-              className="mt-1 w-full px-3 py-2 text-sm rounded-lg bg-bg-tertiary border border-border text-text"
-            >
-              {LANGUAGES.map((lang) => (
-                <option key={lang} value={lang}>{lang}</option>
-              ))}
-            </select>
+        <fieldset className="group-box">
+          <legend>Default OCR Options</legend>
+          <div className="space-y-2">
+            <label className="flex items-center gap-1 cursor-pointer text-xs">
+              <input
+                type="checkbox"
+                checked={opts.force_ocr}
+                onChange={(e) => update({ defaultOptions: { ...opts, force_ocr: e.target.checked } })}
+              />
+              Force OCR
+            </label>
+            <label className="flex items-center gap-1 cursor-pointer text-xs">
+              <input
+                type="checkbox"
+                checked={opts.extract_images}
+                onChange={(e) => update({ defaultOptions: { ...opts, extract_images: e.target.checked } })}
+              />
+              Extract images
+            </label>
+            <div>
+              <label className="text-xs">Language:</label>
+              <select
+                value={opts.language}
+                onChange={(e) => update({ defaultOptions: { ...opts, language: e.target.value } })}
+                className="w-full mt-1"
+              >
+                {LANGUAGES.map((lang) => (
+                  <option key={lang} value={lang}>{lang}</option>
+                ))}
+              </select>
+            </div>
           </div>
-        </section>
+        </fieldset>
 
         {/* Default Output Folder */}
-        <section className="space-y-3">
-          <h2 className="text-sm font-medium text-text-secondary uppercase tracking-wider">
-            Default Output Folder
-          </h2>
-          <div className="flex items-center gap-3">
-            <button
-              onClick={pickDefaultOutputDir}
-              className="shrink-0 px-4 py-2 text-sm rounded-lg border border-border text-text-secondary hover:text-text hover:border-border-hover transition-colors"
-            >
-              {settings.defaultOutputDir ? "Change" : "Choose folder"}
+        <fieldset className="group-box">
+          <legend>Default Output Folder</legend>
+          <div className="flex items-center gap-2">
+            <button onClick={pickDefaultOutputDir} className="btn text-xs">
+              Browse...
             </button>
-            {settings.defaultOutputDir ? (
-              <span className="text-sm text-text-muted truncate">{settings.defaultOutputDir}</span>
-            ) : (
-              <span className="text-sm text-text-muted">Not set (will ask each time)</span>
-            )}
+            <span className="text-xs text-text-secondary truncate">
+              {settings.defaultOutputDir || "(same as input file)"}
+            </span>
           </div>
-        </section>
+        </fieldset>
 
         {/* Model Management */}
-        <section className="space-y-3">
-          <h2 className="text-sm font-medium text-text-secondary uppercase tracking-wider">
-            Model Management
-          </h2>
-          <div className="p-4 rounded-lg bg-bg-secondary border border-border space-y-3">
+        <fieldset className="group-box">
+          <legend>Model Management</legend>
+          <div className="space-y-2">
             <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium">Marker OCR Models</p>
-                <p className="text-xs text-text-muted">~2.5 GB &middot; Required for PDF conversion</p>
-              </div>
+              <span className="text-xs">Marker OCR Models (~2.5 GB)</span>
               {modelsDownloaded === true && (
-                <span className="text-xs text-success px-2 py-0.5 rounded-full bg-success/10">
-                  Downloaded
-                </span>
+                <span className="text-xs text-success font-bold">Downloaded</span>
               )}
               {modelsDownloaded === false && (
-                <span className="text-xs text-text-muted px-2 py-0.5 rounded-full bg-bg-tertiary">
-                  Not downloaded
-                </span>
+                <span className="text-xs text-text-muted">Not downloaded</span>
               )}
               {modelsDownloaded === null && (
                 <span className="text-xs text-text-muted">Checking...</span>
@@ -203,9 +174,9 @@ export function Settings({ onBack }: SettingsProps) {
 
             {downloading && (
               <div className="space-y-1">
-                <div className="w-full h-1.5 rounded-full bg-bg-tertiary overflow-hidden">
+                <div className="progress-track">
                   <div
-                    className="h-full bg-accent rounded-full transition-all duration-300"
+                    className="progress-fill"
                     style={{ width: `${downloadProgress}%` }}
                   />
                 </div>
@@ -216,29 +187,26 @@ export function Settings({ onBack }: SettingsProps) {
             <button
               onClick={redownloadModels}
               disabled={downloading}
-              className="text-xs px-3 py-1.5 rounded-lg border border-border text-text-secondary hover:text-text hover:border-border-hover transition-colors disabled:opacity-50"
+              className="btn text-xs"
             >
-              {modelsDownloaded ? "Re-download models" : "Download models"}
+              {modelsDownloaded ? "Re-download" : "Download"}
             </button>
           </div>
-        </section>
+        </fieldset>
 
         {/* About */}
-        <section className="space-y-3">
-          <h2 className="text-sm font-medium text-text-secondary uppercase tracking-wider">
-            About
-          </h2>
-          <div className="p-4 rounded-lg bg-bg-secondary border border-border space-y-2">
-            <p className="text-sm font-medium">peedee-eff v0.1.0</p>
-            <p className="text-xs text-text-muted">
-              Convert scanned PDFs to EPUB and Markdown with local OCR.
-              Everything runs on your machine.
+        <fieldset className="group-box">
+          <legend>About</legend>
+          <div className="space-y-1">
+            <p className="text-xs font-bold">peedee-eff v0.1.0</p>
+            <p className="text-xs text-text-secondary">
+              Scanned PDF to EPUB & Markdown. Local OCR, no cloud.
             </p>
-            <div className="flex gap-4 text-xs text-text-muted">
-              <span>Built with Tauri + React + Marker</span>
-            </div>
+            <p className="text-xs text-text-muted">
+              Tauri + React + Marker
+            </p>
           </div>
-        </section>
+        </fieldset>
       </main>
     </div>
   );

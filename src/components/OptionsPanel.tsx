@@ -32,123 +32,100 @@ export function OptionsPanel({ options, onChange, disabled }: OptionsPanelProps)
   };
 
   return (
-    <div className="w-full border border-border rounded-lg overflow-hidden">
+    <div>
       <button
         onClick={() => setExpanded(!expanded)}
-        className="w-full flex items-center justify-between p-3 text-sm font-medium text-text-secondary hover:text-text hover:bg-bg-secondary transition-colors"
+        className="btn w-full text-left text-xs font-bold"
       >
-        <span>Conversion Options</span>
-        <svg
-          width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"
-          className={`transition-transform ${expanded ? "rotate-180" : ""}`}
-        >
-          <polyline points="6 9 12 15 18 9" />
-        </svg>
+        {expanded ? "▼" : "►"} Options
       </button>
 
       {expanded && (
-        <div className="p-4 pt-0 space-y-4 border-t border-border">
+        <div className="bevel-inset bg-bg-tertiary p-3 mt-0 space-y-3">
           {/* Output Formats */}
-          <div className="pt-3">
-            <label className="text-xs font-medium text-text-muted uppercase tracking-wider">
-              Output Formats
-            </label>
-            <div className="flex gap-3 mt-2">
+          <fieldset className="group-box">
+            <legend>Output Formats</legend>
+            <div className="flex gap-4">
               {["epub", "markdown"].map((fmt) => (
-                <label key={fmt} className="flex items-center gap-2 cursor-pointer">
+                <label key={fmt} className="flex items-center gap-1 cursor-pointer text-xs">
                   <input
                     type="checkbox"
                     checked={options.output_formats.includes(fmt)}
                     onChange={() => toggleFormat(fmt)}
                     disabled={disabled}
-                    className="accent-accent"
                   />
-                  <span className="text-sm capitalize">{fmt}</span>
+                  {fmt.toUpperCase()}
                 </label>
               ))}
             </div>
-          </div>
+          </fieldset>
 
-          {/* Force OCR */}
-          <div>
-            <label className="flex items-center gap-2 cursor-pointer">
-              <input
-                type="checkbox"
-                checked={options.force_ocr}
-                onChange={(e) => update({ force_ocr: e.target.checked })}
-                disabled={disabled}
-                className="accent-accent"
-              />
-              <span className="text-sm">Force OCR</span>
-              <span className="text-xs text-text-muted">(recommended for scanned PDFs)</span>
-            </label>
-          </div>
-
-          {/* Extract Images */}
-          <div>
-            <label className="flex items-center gap-2 cursor-pointer">
-              <input
-                type="checkbox"
-                checked={options.extract_images}
-                onChange={(e) => update({ extract_images: e.target.checked })}
-                disabled={disabled}
-                className="accent-accent"
-              />
-              <span className="text-sm">Extract images</span>
-            </label>
-          </div>
+          {/* OCR Options */}
+          <fieldset className="group-box">
+            <legend>OCR Options</legend>
+            <div className="space-y-2">
+              <label className="flex items-center gap-1 cursor-pointer text-xs">
+                <input
+                  type="checkbox"
+                  checked={options.force_ocr}
+                  onChange={(e) => update({ force_ocr: e.target.checked })}
+                  disabled={disabled}
+                />
+                Force OCR (recommended for scans)
+              </label>
+              <label className="flex items-center gap-1 cursor-pointer text-xs">
+                <input
+                  type="checkbox"
+                  checked={options.extract_images}
+                  onChange={(e) => update({ extract_images: e.target.checked })}
+                  disabled={disabled}
+                />
+                Extract images
+              </label>
+            </div>
+          </fieldset>
 
           {/* Page Range */}
-          <div>
-            <label className="text-xs font-medium text-text-muted uppercase tracking-wider">
-              Page Range
-            </label>
+          <fieldset className="group-box">
+            <legend>Page Range</legend>
             <input
               type="text"
               value={options.page_range}
               onChange={(e) => update({ page_range: e.target.value })}
-              placeholder="e.g. 1-50, 55-100 (leave empty for all)"
+              placeholder="e.g. 1-50, 55-100 (all if empty)"
               disabled={disabled}
-              className="mt-1 w-full px-3 py-2 text-sm rounded-lg bg-bg-tertiary border border-border text-text placeholder:text-text-muted focus:outline-none focus:border-accent"
+              className="w-full"
             />
-          </div>
+          </fieldset>
 
-          {/* Language */}
-          <div>
-            <label className="text-xs font-medium text-text-muted uppercase tracking-wider">
-              Language
-            </label>
-            <select
-              value={options.language}
-              onChange={(e) => update({ language: e.target.value })}
-              disabled={disabled}
-              className="mt-1 w-full px-3 py-2 text-sm rounded-lg bg-bg-tertiary border border-border text-text focus:outline-none focus:border-accent"
-            >
-              {LANGUAGES.map((lang) => (
-                <option key={lang} value={lang}>
-                  {lang}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          {/* Engine */}
-          <div>
-            <label className="text-xs font-medium text-text-muted uppercase tracking-wider">
-              OCR Engine
-            </label>
-            <select
-              value={options.engine}
-              onChange={(e) => update({ engine: e.target.value })}
-              disabled={disabled}
-              className="mt-1 w-full px-3 py-2 text-sm rounded-lg bg-bg-tertiary border border-border text-text focus:outline-none focus:border-accent"
-            >
-              {ENGINES.map((eng) => (
-                <option key={eng.value} value={eng.value}>
-                  {eng.label}
-                </option>
-              ))}
-            </select>
+          {/* Language & Engine */}
+          <div className="flex gap-3">
+            <fieldset className="group-box flex-1">
+              <legend>Language</legend>
+              <select
+                value={options.language}
+                onChange={(e) => update({ language: e.target.value })}
+                disabled={disabled}
+                className="w-full"
+              >
+                {LANGUAGES.map((lang) => (
+                  <option key={lang} value={lang}>{lang}</option>
+                ))}
+              </select>
+            </fieldset>
+            <fieldset className="group-box flex-1">
+              <legend>Engine</legend>
+              <select
+                value={options.engine}
+                onChange={(e) => update({ engine: e.target.value })}
+                disabled={disabled}
+                className="w-full"
+              >
+                {ENGINES.map((eng) => (
+                  <option key={eng.value} value={eng.value}>{eng.label}</option>
+                ))}
+              </select>
+            </fieldset>
           </div>
         </div>
       )}
