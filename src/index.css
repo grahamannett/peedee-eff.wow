@@ -21,159 +21,169 @@
 }
 
 @font-face {
-  font-family: "Geneva";
-  src: local("Geneva"), local("Verdana"), local("Tahoma"), local("Arial");
+	font-family: "Geneva";
+	src: local("Geneva"), local("Verdana"), local("Tahoma"), local("Arial");
 }
 
 body {
-  margin: 0;
-  background: var(--color-bg);
-  color: var(--color-text);
-  font-family: "Geneva", "Verdana", "Tahoma", system-ui, sans-serif;
-  font-size: 12px;
-  -webkit-font-smoothing: none;
-  -moz-osx-font-smoothing: unset;
+	margin: 0;
+	background: var(--color-bg);
+	color: var(--color-text);
+	font-family: "Geneva", "Verdana", "Tahoma", system-ui, sans-serif;
+	font-size: 12px;
+	-webkit-font-smoothing: none;
+	-moz-osx-font-smoothing: unset;
 }
 
 * {
-  box-sizing: border-box;
+	box-sizing: border-box;
 }
 
 /* Classic beveled panel - raised */
 .bevel-raised {
-  border: 2px solid;
-  border-color: var(--color-border-light) var(--color-border-dark) var(--color-border-dark) var(--color-border-light);
+	border: 2px solid;
+	border-color: var(--color-border-light) var(--color-border-dark)
+		var(--color-border-dark) var(--color-border-light);
 }
 
 /* Classic beveled panel - sunken/inset */
 .bevel-inset {
-  border: 2px solid;
-  border-color: var(--color-border-dark) var(--color-border-light) var(--color-border-light) var(--color-border-dark);
+	border: 2px solid;
+	border-color: var(--color-border-dark) var(--color-border-light)
+		var(--color-border-light) var(--color-border-dark);
 }
 
 /* Classic button */
 .btn {
-  background: var(--color-bg-secondary);
-  border: 2px solid;
-  border-color: var(--color-border-light) var(--color-border-dark) var(--color-border-dark) var(--color-border-light);
-  padding: 3px 12px;
-  font-family: inherit;
-  font-size: 12px;
-  cursor: pointer;
-  min-height: 23px;
+	background: var(--color-bg-secondary);
+	border: 2px solid;
+	border-color: var(--color-border-light) var(--color-border-dark)
+		var(--color-border-dark) var(--color-border-light);
+	padding: 3px 12px;
+	font-family: inherit;
+	font-size: 12px;
+	cursor: pointer;
+	min-height: 23px;
 }
 
 .btn:active {
-  border-color: var(--color-border-dark) var(--color-border-light) var(--color-border-light) var(--color-border-dark);
+	border-color: var(--color-border-dark) var(--color-border-light)
+		var(--color-border-light) var(--color-border-dark);
 }
 
 .btn:disabled {
-  color: var(--color-text-muted);
-  cursor: default;
+	color: var(--color-text-muted);
+	cursor: default;
 }
 
 .btn-primary {
-  background: var(--color-accent);
-  color: var(--color-accent-text);
+	background: var(--color-accent);
+	color: var(--color-accent-text);
 }
 
 .btn-primary:disabled {
-  background: var(--color-border);
-  color: var(--color-bg);
+	background: var(--color-border);
+	color: var(--color-bg);
 }
 
 /* Classic checkbox */
 input[type="checkbox"] {
-  appearance: none;
-  width: 13px;
-  height: 13px;
-  background: var(--color-bg-inset);
-  border: 2px solid;
-  border-color: var(--color-border-dark) var(--color-border-light) var(--color-border-light) var(--color-border-dark);
-  cursor: pointer;
-  vertical-align: middle;
-  position: relative;
+	appearance: none;
+	width: 13px;
+	height: 13px;
+	background: var(--color-bg-inset);
+	border: 2px solid;
+	border-color: var(--color-border-dark) var(--color-border-light)
+		var(--color-border-light) var(--color-border-dark);
+	cursor: pointer;
+	vertical-align: middle;
+	position: relative;
 }
 
 input[type="checkbox"]:checked::after {
-  content: "✓";
-  position: absolute;
-  top: -2px;
-  left: 1px;
-  font-size: 12px;
-  font-weight: bold;
-  line-height: 1;
+	content: "✓";
+	position: absolute;
+	top: -2px;
+	left: 1px;
+	font-size: 12px;
+	font-weight: bold;
+	line-height: 1;
 }
 
 /* Classic select */
 select {
-  background: var(--color-bg-inset);
-  border: 2px solid;
-  border-color: var(--color-border-dark) var(--color-border-light) var(--color-border-light) var(--color-border-dark);
-  padding: 2px 4px;
-  font-family: inherit;
-  font-size: 12px;
-  cursor: pointer;
+	background: var(--color-bg-inset);
+	border: 2px solid;
+	border-color: var(--color-border-dark) var(--color-border-light)
+		var(--color-border-light) var(--color-border-dark);
+	padding: 2px 4px;
+	font-family: inherit;
+	font-size: 12px;
+	cursor: pointer;
 }
 
 /* Classic text input */
 input[type="text"] {
-  background: var(--color-bg-inset);
-  border: 2px solid;
-  border-color: var(--color-border-dark) var(--color-border-light) var(--color-border-light) var(--color-border-dark);
-  padding: 2px 4px;
-  font-family: inherit;
-  font-size: 12px;
+	background: var(--color-bg-inset);
+	border: 2px solid;
+	border-color: var(--color-border-dark) var(--color-border-light)
+		var(--color-border-light) var(--color-border-dark);
+	padding: 2px 4px;
+	font-family: inherit;
+	font-size: 12px;
 }
 
-input[type="text"]:focus, select:focus {
-  outline: 1px dotted var(--color-accent);
+input[type="text"]:focus,
+select:focus {
+	outline: 1px dotted var(--color-accent);
 }
 
 /* Classic progress bar */
 .progress-track {
-  background: var(--color-bg-inset);
-  border: 2px solid;
-  border-color: var(--color-border-dark) var(--color-border-light) var(--color-border-light) var(--color-border-dark);
-  height: 18px;
+	background: var(--color-bg-inset);
+	border: 2px solid;
+	border-color: var(--color-border-dark) var(--color-border-light)
+		var(--color-border-light) var(--color-border-dark);
+	height: 18px;
 }
 
 .progress-fill {
-  background: var(--color-accent);
-  height: 100%;
-  transition: width 300ms;
+	background: var(--color-accent);
+	height: 100%;
+	transition: width 300ms;
 }
 
 /* Etched separator */
 .etch {
-  border-top: 1px solid var(--color-border);
-  border-bottom: 1px solid var(--color-border-light);
-  height: 0;
+	border-top: 1px solid var(--color-border);
+	border-bottom: 1px solid var(--color-border-light);
+	height: 0;
 }
 
 /* Group box */
 .group-box {
-  border: 1px solid var(--color-border);
-  padding: 8px;
-  margin: 0;
+	border: 1px solid var(--color-border);
+	padding: 8px;
+	margin: 0;
 }
 
 .group-box legend {
-  padding: 0 4px;
-  font-size: 11px;
-  color: var(--color-text);
+	padding: 0 4px;
+	font-size: 11px;
+	color: var(--color-text);
 }
 
 /* Scrollbar styling (webkit) */
 ::-webkit-scrollbar {
-  width: 16px;
+	width: 16px;
 }
 ::-webkit-scrollbar-track {
-  background: var(--color-bg-tertiary);
-  border-left: 1px solid var(--color-border);
+	background: var(--color-bg-tertiary);
+	border-left: 1px solid var(--color-border);
 }
 ::-webkit-scrollbar-thumb {
-  background: var(--color-bg-secondary);
-  border: 2px solid;
-  border-color: var(--color-border-light) var(--color-border-dark) var(--color-border-dark) var(--color-border-light);
+	background: var(--color-bg-secondary);
+	border: 2px solid;
+	border-color: var(--color-border-light) var(--color-border-dark)
+		var(--color-border-dark) var(--color-border-light);
 }

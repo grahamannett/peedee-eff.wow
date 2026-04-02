@@ -7,3 +7,6 @@ rust = "1.94.1"
 
 [tasks."format:py"]
     run = "ruff format ."
+
+[tasks."format:ts"]
+    run = "bunx biome check --write ."
