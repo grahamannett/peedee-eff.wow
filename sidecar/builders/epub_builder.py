@@ -5,7 +5,6 @@ import uuid
 import latex2mathml.converter
 from ebooklib import epub
 
-
 DEFAULT_CSS = """
 body {
     font-family: Georgia, serif;
@@ -137,7 +136,7 @@ def _markdown_to_html(text: str) -> str:
         if stripped.startswith("$$") and stripped.endswith("$$") and len(stripped) > 4:
             latex = stripped[2:-2].strip()
             mathml = _latex_to_mathml(latex, display=True)
-            html_parts.append(f"<div class=\"math-block\">{mathml}</div>")
+            html_parts.append(f'<div class="math-block">{mathml}</div>')
             continue
 
         # Regular paragraph

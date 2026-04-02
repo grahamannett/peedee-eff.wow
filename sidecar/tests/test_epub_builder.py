@@ -2,7 +2,7 @@ import os
 import tempfile
 import zipfile
 
-from builders.epub_builder import build_epub, _markdown_to_html, _split_into_chapters
+from builders.epub_builder import _markdown_to_html, _split_into_chapters, build_epub
 
 
 def test_markdown_to_html_headings():
@@ -89,11 +89,21 @@ def test_build_epub_with_images():
             signature = b"\x89PNG\r\n\x1a\n"
             ihdr_data = struct.pack(">IIBBBBB", 1, 1, 8, 2, 0, 0, 0)
             ihdr_crc = zlib.crc32(b"IHDR" + ihdr_data)
-            ihdr = struct.pack(">I", 13) + b"IHDR" + ihdr_data + struct.pack(">I", ihdr_crc)
+            ihdr = (
+                struct.pack(">I", 13)
+                + b"IHDR"
+                + ihdr_data
+                + struct.pack(">I", ihdr_crc)
+            )
             raw = b"\x00\xff\x00\x00"
             compressed = zlib.compress(raw)
             idat_crc = zlib.crc32(b"IDAT" + compressed)
-            idat = struct.pack(">I", len(compressed)) + b"IDAT" + compressed + struct.pack(">I", idat_crc)
+            idat = (
+                struct.pack(">I", len(compressed))
+                + b"IDAT"
+                + compressed
+                + struct.pack(">I", idat_crc)
+            )
             iend_crc = zlib.crc32(b"IEND")
             iend = struct.pack(">I", 0) + b"IEND" + struct.pack(">I", iend_crc)
             return signature + ihdr + idat + iend

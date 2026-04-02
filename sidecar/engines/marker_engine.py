@@ -15,6 +15,7 @@ class MarkerEngine(OCREngine):
     def is_available(self) -> bool:
         try:
             import marker  # noqa: F401
+
             return True
         except ImportError:
             return False

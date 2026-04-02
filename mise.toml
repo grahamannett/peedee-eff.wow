@@ -1,0 +1,9 @@
+[tools]
+rust = "1.94.1"
+
+
+[tasks.run]
+    run = "bun tauri dev"
+
+[tasks."format:py"]
+    run = "ruff format ."

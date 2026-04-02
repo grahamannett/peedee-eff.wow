@@ -39,7 +39,7 @@ This is a mock conversion of `{pdf_path}`.
 The document was processed with the following options:
 - Force OCR: {options.force_ocr}
 - Language: {options.language}
-- Page range: {options.page_range or 'all'}
+- Page range: {options.page_range or "all"}
 - Extract images: {options.extract_images}
 
 ## Chapter 2: Content
@@ -67,6 +67,4 @@ This concludes the mock conversion output.
             "engine": self.name(),
         }
 
-        return ConversionResult(
-            markdown=markdown, images=images, metadata=metadata
-        )
+        return ConversionResult(markdown=markdown, images=images, metadata=metadata)

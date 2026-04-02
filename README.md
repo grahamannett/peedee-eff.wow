@@ -1,58 +1,41 @@
 # peedee-eff
 
-Desktop app that converts scanned/image PDFs into EPUBs and Markdown files. Runs OCR locally on your machine — nothing leaves your computer.
+i have a bunch of scanned PDFs (textbooks, papers, etc) that i want to read on my kindle or just have as markdown. this app does that — drop a PDF in, get an EPUB and/or markdown out. equations get rendered properly in the epub, images get extracted, the whole thing runs locally on your machine with no cloud anything.
 
 ![peedee-eff converting a PDF](docs/peedee-eff-running.png)
 
-## What it does
+uses [marker](https://github.com/VikParuchuri/marker) for OCR. the app is a tauri v2 shell (rust backend, react frontend) that spawns a python sidecar for the heavy lifting. the sidecar talks to tauri over stdin/stdout json.
 
-Drop a PDF in, get an EPUB and/or Markdown file out. It uses [Marker](https://github.com/VikParuchuri/marker) for OCR under the hood, which handles text, images, equations (rendered as MathML in the EPUB), and document structure.
+## running it
 
-## How to build
-
-You need: Rust, bun, Python 3.10+, uv.
+you need rust, bun, python 3.10+, and uv.
 
 ```bash
-# Frontend deps
 bun install
-
-# Python sidecar deps
 cd sidecar && uv sync && cd ..
-
-# Run
 bun tauri dev
 ```
 
-On first launch the app will download OCR models (~2.5 GB). This only happens once.
+first launch downloads OCR models (~2.5 GB), only happens once.
 
-## Stack
-
-- **Tauri v2** — Rust backend, native macOS window
-- **React + TypeScript** — frontend, served by Vite in dev
-- **Python sidecar** — does the actual OCR and EPUB building, talks to Tauri over stdin/stdout JSON
-- **Marker** — the OCR engine (wraps surya)
-- **ebooklib** — EPUB construction
-- **latex2mathml** — equation rendering
-
-## Project layout
-
-```
-src/              React frontend
-src-tauri/        Rust backend (Tauri commands, sidecar management)
-sidecar/          Python OCR + EPUB builder
-  engines/        OCR engine interface + implementations
-  builders/       EPUB/Markdown output builders
-  tests/          pytest suite
-```
-
-## Tests
+## tests
 
 ```bash
-cd sidecar && uv run python -m pytest tests/ -v   # Python (18 tests)
-cd src-tauri && cargo test                          # Rust integration
-npx tsc --noEmit                                    # TypeScript
+cd sidecar && uv run python -m pytest tests/ -v
+cd src-tauri && cargo test
+bunx tsc --noEmit
 ```
 
-## Status
+## layout
 
-Works. macOS only (Apple Silicon). Not yet packaged as a .dmg.
+```
+src/              frontend (react + typescript)
+src-tauri/        rust backend, sidecar management
+sidecar/          python ocr + epub builder
+  engines/        ocr engine interface (marker, mock, etc)
+  builders/       epub and markdown output
+```
+
+## status
+
+works on macos (apple silicon). not packaged as a .dmg yet.

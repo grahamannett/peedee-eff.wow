@@ -2,10 +2,10 @@ import json
 import os
 import sys
 
-from engines.base import ConversionOptions
-from engines.mock_engine import MockEngine
-from engines.marker_engine import MarkerEngine
 from builders.epub_builder import build_epub
+from engines.base import ConversionOptions
+from engines.marker_engine import MarkerEngine
+from engines.mock_engine import MockEngine
 from utils.progress import make_progress_callback, send_message
 
 ENGINES = {
@@ -75,7 +75,9 @@ def handle_convert(msg: dict) -> None:
         try:
             build_epub(md_path, images_dir, epub_path, title=title)
         except Exception as e:
-            send_message({"type": "error", "id": job_id, "message": f"EPUB build failed: {e}"})
+            send_message(
+                {"type": "error", "id": job_id, "message": f"EPUB build failed: {e}"}
+            )
             return
 
     outputs = {
@@ -147,20 +149,28 @@ def main() -> None:
 
         msg_type = msg.get("type")
         if not msg_type:
-            send_message({"type": "error", "id": None, "message": "Missing 'type' field"})
+            send_message(
+                {"type": "error", "id": None, "message": "Missing 'type' field"}
+            )
             continue
 
         handler = HANDLERS.get(msg_type)
         if handler is None:
             send_message(
-                {"type": "error", "id": msg.get("id"), "message": f"Unknown message type: {msg_type}"}
+                {
+                    "type": "error",
+                    "id": msg.get("id"),
+                    "message": f"Unknown message type: {msg_type}",
+                }
             )
             continue
 
         try:
             handler(msg)
         except Exception as e:
-            send_message({"type": "error", "id": msg.get("id"), "message": f"Handler error: {e}"})
+            send_message(
+                {"type": "error", "id": msg.get("id"), "message": f"Handler error: {e}"}
+            )
 
 
 if __name__ == "__main__":
